@@ -3,6 +3,7 @@ package packr
 import (
 	"bytes"
 	"fmt"
+	"io"
 	"os"
 	"time"
 )
@@ -12,6 +13,7 @@ var _ File = virtualFile{}
 
 type virtualFile struct {
 	*bytes.Reader
+	io.Writer
 	Name string
 	info fileInfo
 }
@@ -24,8 +26,10 @@ func (f virtualFile) Close() error {
 	return nil
 }
 
-func (f virtualFile) Write(p []byte) (n int, err error) {
+func (f virtualFile) Write(b []byte) (n int, err error) {
 	return 0, fmt.Errorf("Not implemented")
+	f.Reader = bytes.NewReader(b)
+	return n, nil
 }
 
 func (f virtualFile) Readdir(count int) ([]os.FileInfo, error) {

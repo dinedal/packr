@@ -42,3 +42,11 @@ func Test_PackBytesGzip(t *testing.T) {
 	s := testBox.String("gzip")
 	r.Equal("gzip foobar", s)
 }
+
+func Test_VirtualPackBytesGzip(t *testing.T) {
+	r := require.New(t)
+	err := PackBytesGzip(virtualBox.Path, "gzip", []byte("gzip foobar"))
+	r.NoError(err)
+	s := virtualBox.String("gzip")
+	r.Equal("gzip foobar", s)
+}
